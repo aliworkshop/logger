@@ -1,4 +1,4 @@
-package loggercore
+package loggerlib
 
 import (
 	"errors"
