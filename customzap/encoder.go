@@ -18,12 +18,8 @@ func ShortCallerEncoder(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEn
 	enc.AppendString(path)
 }
 
-type workshopEnc struct {
-	zapcore.Encoder
-}
+type mazdaxEnc struct{}
 
 func newEnc() zapcore.Encoder {
-	return workshopEnc{
-		Encoder: zapcore.NewJSONEncoder(zapcore.EncoderConfig{}),
-	}
+	return nil
 }

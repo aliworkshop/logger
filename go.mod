@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/aliworkshop/configlib v1.0.0
 	github.com/aliworkshop/errorslib v1.0.0
-	go.uber.org/zap v1.21.0
+	go.uber.org/zap v1.22.0
 )
 
 require (

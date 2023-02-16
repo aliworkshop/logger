@@ -6,28 +6,20 @@ import (
 	"github.com/aliworkshop/loggerlib/writers"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"sync"
 )
 
 var pcNames map[uintptr]string
-var pcNamesMtx *sync.RWMutex
 
 func init() {
 	pcNames = make(map[uintptr]string)
-	pcNamesMtx = new(sync.RWMutex)
-}
-
-type metaField struct {
-	fields []zapcore.Field
-	enc    zapcore.Encoder
 }
 
 type zapLogger struct {
 	loggers []*zap.Logger
-	meta    *metaField
-	id      string
-	uid     string
-	source  string
+	Meta    []logger.Field
+	Uid     string
+	Source  string
+	Id      string
 }
 
 func NewLogger(registry configlib.Registry, writers []writers.Writer) (logger.Logger, error) {
@@ -56,12 +48,7 @@ func NewLogger(registry configlib.Registry, writers []writers.Writer) (logger.Lo
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   ShortCallerEncoder,
 	})
-	metaEncoder := decideEncoder(config.Encoding, zapcore.EncoderConfig{})
 	zl := new(zapLogger)
-	zl.meta = &metaField{
-		fields: []zapcore.Field{},
-		enc:    metaEncoder,
-	}
 	for _, w := range writers {
 		level := zapLevel
 		if l, ok := w.Level(); ok {
@@ -77,16 +64,8 @@ func (zl *zapLogger) Clone() logger.Logger {
 }
 
 func (zl *zapLogger) clone() *zapLogger {
-	zlc := &zapLogger{
-		meta:   zl.meta.Clone(),
-		id:     zl.id,
-		uid:    zl.uid,
-		source: zl.source,
-	}
-	for _, l := range zl.loggers {
-		zlc.loggers = append(zlc.loggers, l)
-	}
-	return zlc
+	cpy := zl.loggers
+	return &zapLogger{loggers: cpy, Meta: zl.Meta, Uid: zl.Uid, Id: zl.Id, Source: zl.Source}
 }
 
 func decideEncoder(Type string, config zapcore.EncoderConfig) zapcore.Encoder {
