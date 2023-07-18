@@ -3,7 +3,7 @@ package customzap
 import (
 	"github.com/aliworkshop/configlib"
 	"github.com/aliworkshop/loggerlib/logger"
-	"github.com/aliworkshop/loggerlib/writers"
+	writer "github.com/aliworkshop/loggerlib/writers"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -22,7 +22,7 @@ type zapLogger struct {
 	Id      string
 }
 
-func NewLogger(registry configlib.Registry, writers []writers.Writer) (logger.Logger, error) {
+func NewLogger(registry configlib.Registry, writers []writer.Writer) (logger.Logger, error) {
 	config := new(Config)
 	err := registry.Unmarshal(config)
 	if err != nil {
@@ -54,7 +54,7 @@ func NewLogger(registry configlib.Registry, writers []writers.Writer) (logger.Lo
 		if l, ok := w.Level(); ok {
 			level = getZapLevel(l)
 		}
-		zl.loggers = append(zl.loggers, zap.New(zapcore.NewCore(enc, zapcore.AddSync(w), zap.NewAtomicLevelAt(level))))
+		zl.loggers = append(zl.loggers, zap.New(writer.NewCore(enc, zapcore.AddSync(w), zap.NewAtomicLevelAt(level))))
 	}
 	return zl, err
 }
