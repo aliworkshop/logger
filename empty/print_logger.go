@@ -2,7 +2,7 @@ package empty
 
 import (
 	"fmt"
-	"github.com/aliworkshop/loggerlib/logger"
+	"github.com/aliworkshop/logger/logger"
 )
 
 type emptyLogger struct{}

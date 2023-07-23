@@ -1,7 +1,7 @@
 package noop
 
 import (
-	"github.com/aliworkshop/loggerlib/logger"
+	"github.com/aliworkshop/logger/logger"
 )
 
 type noop struct{}

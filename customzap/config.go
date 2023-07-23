@@ -1,7 +1,7 @@
 package customzap
 
 import (
-	"github.com/aliworkshop/loggerlib/logger"
+	"github.com/aliworkshop/logger/logger"
 	"go.uber.org/zap/zapcore"
 )
 

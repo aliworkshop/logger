@@ -1,11 +1,11 @@
-package loggerlib
+package logger
 
 import (
 	"errors"
 	"github.com/aliworkshop/configer"
-	"github.com/aliworkshop/loggerlib/customzap"
-	"github.com/aliworkshop/loggerlib/logger"
-	"github.com/aliworkshop/loggerlib/writers"
+	"github.com/aliworkshop/logger/customzap"
+	"github.com/aliworkshop/logger/logger"
+	"github.com/aliworkshop/logger/writers"
 )
 
 func GetLogger(registry configer.Registry) (logger.Logger, error) {

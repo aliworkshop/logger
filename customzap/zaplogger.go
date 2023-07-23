@@ -2,8 +2,8 @@ package customzap
 
 import (
 	"github.com/aliworkshop/configer"
-	"github.com/aliworkshop/loggerlib/logger"
-	writer "github.com/aliworkshop/loggerlib/writers"
+	"github.com/aliworkshop/logger/logger"
+	writer "github.com/aliworkshop/logger/writers"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

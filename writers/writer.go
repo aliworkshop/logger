@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/aliworkshop/configer"
 	"github.com/aliworkshop/error"
-	"github.com/aliworkshop/loggerlib/logger"
+	"github.com/aliworkshop/logger/logger"
 	"io"
 )
 

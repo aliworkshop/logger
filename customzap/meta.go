@@ -1,6 +1,6 @@
 package customzap
 
-import "github.com/aliworkshop/loggerlib/logger"
+import "github.com/aliworkshop/logger/logger"
 
 func (zl *zapLogger) withMeta(fields logger.Field) *zapLogger {
 	l := zl.clone()

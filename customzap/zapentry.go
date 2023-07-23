@@ -2,7 +2,7 @@ package customzap
 
 import (
 	"fmt"
-	"github.com/aliworkshop/loggerlib/logger"
+	"github.com/aliworkshop/logger/logger"
 	"go.uber.org/zap/zapcore"
 	"runtime"
 	"strings"

@@ -1,7 +1,7 @@
 package writers
 
 import (
-	"github.com/aliworkshop/loggerlib/logger"
+	"github.com/aliworkshop/logger/logger"
 	"io"
 	"os"
 )

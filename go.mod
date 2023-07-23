@@ -1,4 +1,4 @@
-module github.com/aliworkshop/loggerlib
+module github.com/aliworkshop/logger
 
 go 1.18
 
