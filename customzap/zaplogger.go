@@ -1,7 +1,7 @@
 package customzap
 
 import (
-	"github.com/aliworkshop/configlib"
+	"github.com/aliworkshop/configer"
 	"github.com/aliworkshop/loggerlib/logger"
 	writer "github.com/aliworkshop/loggerlib/writers"
 	"go.uber.org/zap"
@@ -22,7 +22,7 @@ type zapLogger struct {
 	Id      string
 }
 
-func NewLogger(registry configlib.Registry, writers []writer.Writer) (logger.Logger, error) {
+func NewLogger(registry configer.Registry, writers []writer.Writer) (logger.Logger, error) {
 	config := new(Config)
 	err := registry.Unmarshal(config)
 	if err != nil {

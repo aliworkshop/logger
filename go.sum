@@ -38,10 +38,10 @@ cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3f
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/aliworkshop/configlib v1.0.0 h1:Bxl6vuC7wSQw6CistH1JTZXuErf3sWaJv1+ZYSOA6tM=
-github.com/aliworkshop/configlib v1.0.0/go.mod h1:t1Zx0B+KimPCI32q0FqVsL0YrpQs4EKfoZs/hM4wqu0=
-github.com/aliworkshop/errorslib v1.0.0 h1:USO/UZFL8x8tmCCxQ8xjWICG7n5gRBxNOEpfvq9o6g8=
-github.com/aliworkshop/errorslib v1.0.0/go.mod h1:jYW96Mz3yKbkk9NU7UE9EALknkiGeam0QSKZY582Y+c=
+github.com/aliworkshop/configer v1.1.0 h1:Q+rNMMhOyK8jmdzLm5FmHH2V18s1QS9ku0UBPHqXZdg=
+github.com/aliworkshop/configer v1.1.0/go.mod h1:vZpFM3xT0m2i8fMXdqGbxbzlJnIoHP7W8kJfQQV4ek0=
+github.com/aliworkshop/error v1.1.0 h1:3FweSjOopjK77cUIf7Uc3xp5c4lwP7v7lHAuM9KNWvA=
+github.com/aliworkshop/error v1.1.0/go.mod h1:VRB+hcvwb2JVirODAkkL6akeV44yfgEPhHaKgIEq3aI=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=

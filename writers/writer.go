@@ -2,8 +2,8 @@ package writers
 
 import (
 	"fmt"
-	"github.com/aliworkshop/configlib"
-	"github.com/aliworkshop/errorslib"
+	"github.com/aliworkshop/configer"
+	"github.com/aliworkshop/error"
 	"github.com/aliworkshop/loggerlib/logger"
 	"io"
 )
@@ -18,13 +18,13 @@ type Writer interface {
 	io.Writer
 }
 
-func GetWriter(kind string, registry configlib.Registry) (Writer, errorslib.ErrorModel) {
+func GetWriter(kind string, registry configer.Registry) (Writer, error.ErrorModel) {
 	switch kind {
 	case "stdout":
 		act := new(isActive)
 		err := registry.Unmarshal(act)
 		if err != nil {
-			return nil, errorslib.HandleError(err)
+			return nil, error.HandleError(err)
 		}
 		if act.Active {
 			return newStdout(act.Level), nil
@@ -34,13 +34,13 @@ func GetWriter(kind string, registry configlib.Registry) (Writer, errorslib.Erro
 		act := new(isActive)
 		err := registry.Unmarshal(act)
 		if err != nil {
-			return nil, errorslib.HandleError(err)
+			return nil, error.HandleError(err)
 		}
 		if act.Active {
 			return newStderr(act.Level), nil
 		}
 		return nil, nil
 	default:
-		return nil, errorslib.New(fmt.Errorf("logger writer not found"))
+		return nil, error.New(fmt.Errorf("logger writer not found"))
 	}
 }

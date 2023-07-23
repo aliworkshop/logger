@@ -2,13 +2,13 @@ package loggerlib
 
 import (
 	"errors"
-	"github.com/aliworkshop/configlib"
+	"github.com/aliworkshop/configer"
 	"github.com/aliworkshop/loggerlib/customzap"
 	"github.com/aliworkshop/loggerlib/logger"
 	"github.com/aliworkshop/loggerlib/writers"
 )
 
-func GetLogger(registry configlib.Registry) (logger.Logger, error) {
+func GetLogger(registry configer.Registry) (logger.Logger, error) {
 	config := new(logger.Config)
 	err := registry.Unmarshal(config)
 	if err != nil {
