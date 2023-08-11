@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/aliworkshop/configer"
 	"github.com/aliworkshop/error"
-	"github.com/aliworkshop/logger/logger"
 	"io"
 )
 
@@ -14,7 +13,7 @@ type isActive struct {
 }
 
 type Writer interface {
-	Level() (logger.Level, bool)
+	Level() (Level, bool)
 	io.Writer
 }
 

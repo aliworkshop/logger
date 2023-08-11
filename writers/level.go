@@ -1,4 +1,4 @@
-package logger
+package writers
 
 // Level is the minimum enabled logging level. Note that this is a dynamic
 // level, so calling Config.Level.SetLevel will atomically change the log

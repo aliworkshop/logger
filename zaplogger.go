@@ -1,41 +1,33 @@
-package customzap
+package logger
 
 import (
 	"github.com/aliworkshop/configer"
-	"github.com/aliworkshop/logger/logger"
-	writer "github.com/aliworkshop/logger/writers"
+	"github.com/aliworkshop/logger/writers"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-var pcNames map[uintptr]string
-
-func init() {
-	pcNames = make(map[uintptr]string)
-}
-
 type zapLogger struct {
 	loggers []*zap.Logger
-	Meta    []logger.Field
 	Uid     string
 	Source  string
 	Id      string
 }
 
-func NewLogger(registry configer.Registry, writers []writer.Writer) (logger.Logger, error) {
-	config := new(Config)
-	err := registry.Unmarshal(config)
+func NewLogger(registry configer.Registry, wrts []writers.Writer) (Logger, error) {
+	cfg := new(Config)
+	err := registry.Unmarshal(cfg)
 	if err != nil {
 		return nil, err
 	}
 
-	zapLevel := getZapLevel(config.Level)
+	zapLevel := getZapLevel(cfg.Level)
 
-	if config.Encoding == "" {
-		config.Encoding = "json"
+	if cfg.Encoding == "" {
+		cfg.Encoding = "json"
 	}
 
-	enc := decideEncoder(config.Encoding, zapcore.EncoderConfig{
+	enc := decideEncoder(cfg.Encoding, zapcore.EncoderConfig{
 		TimeKey:        "ts",
 		LevelKey:       "level",
 		NameKey:        "logger",
@@ -49,23 +41,23 @@ func NewLogger(registry configer.Registry, writers []writer.Writer) (logger.Logg
 		EncodeCaller:   ShortCallerEncoder,
 	})
 	zl := new(zapLogger)
-	for _, w := range writers {
+	for _, w := range wrts {
 		level := zapLevel
 		if l, ok := w.Level(); ok {
 			level = getZapLevel(l)
 		}
-		zl.loggers = append(zl.loggers, zap.New(writer.NewCore(enc, zapcore.AddSync(w), zap.NewAtomicLevelAt(level))))
+		zl.loggers = append(zl.loggers, zap.New(writers.NewCore(enc, zapcore.AddSync(w), zap.NewAtomicLevelAt(level))))
 	}
 	return zl, err
 }
 
-func (zl *zapLogger) Clone() logger.Logger {
+func (zl *zapLogger) Clone() Logger {
 	return zl.clone()
 }
 
 func (zl *zapLogger) clone() *zapLogger {
 	cpy := zl.loggers
-	return &zapLogger{loggers: cpy, Meta: zl.Meta, Uid: zl.Uid, Id: zl.Id, Source: zl.Source}
+	return &zapLogger{loggers: cpy, Uid: zl.Uid, Id: zl.Id, Source: zl.Source}
 }
 
 func decideEncoder(Type string, config zapcore.EncoderConfig) zapcore.Encoder {

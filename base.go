@@ -3,22 +3,25 @@ package logger
 import (
 	"errors"
 	"github.com/aliworkshop/configer"
-	"github.com/aliworkshop/logger/customzap"
-	"github.com/aliworkshop/logger/logger"
 	"github.com/aliworkshop/logger/writers"
 )
 
-func GetLogger(registry configer.Registry) (logger.Logger, error) {
-	config := new(logger.Config)
-	err := registry.Unmarshal(config)
+type config struct {
+	Type    string
+	Writers map[string]interface{}
+}
+
+func GetLogger(registry configer.Registry) (Logger, error) {
+	cfg := new(config)
+	err := registry.Unmarshal(cfg)
 	if err != nil {
 		return nil, err
 	}
-	if config.Type == "" {
-		config.Type = "zap"
+	if cfg.Type == "" {
+		cfg.Type = "zap"
 	}
 	var wss []writers.Writer
-	for k, _ := range config.Writers {
+	for k, _ := range cfg.Writers {
 		ws, err := writers.GetWriter(k, registry.ValueOf("writers."+k))
 		if err != nil {
 			return nil, err
@@ -27,9 +30,9 @@ func GetLogger(registry configer.Registry) (logger.Logger, error) {
 			wss = append(wss, ws)
 		}
 	}
-	switch config.Type {
+	switch cfg.Type {
 	case "zap":
-		zl, err := customzap.NewLogger(registry, wss)
+		zl, err := NewLogger(registry, wss)
 		if err != nil {
 			return nil, err
 		}

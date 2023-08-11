@@ -1,7 +1,6 @@
 package writers
 
 import (
-	"github.com/aliworkshop/logger/logger"
 	"io"
 	"os"
 )
@@ -18,11 +17,11 @@ func newStdout(level string) Writer {
 	}
 }
 
-func (s *stdout) Level() (logger.Level, bool) {
+func (s *stdout) Level() (Level, bool) {
 	if s.level == "" {
 		return "", false
 	}
-	return logger.Level(s.level), true
+	return Level(s.level), true
 }
 
 type stdErr struct {
@@ -37,9 +36,9 @@ func newStderr(level string) Writer {
 	}
 }
 
-func (s *stdErr) Level() (logger.Level, bool) {
+func (s *stdErr) Level() (Level, bool) {
 	if s.level == "" {
 		return "", false
 	}
-	return logger.Level(s.level), true
+	return Level(s.level), true
 }

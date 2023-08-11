@@ -1,97 +1,92 @@
-package customzap
+package logger
 
 import (
 	"fmt"
-	"github.com/aliworkshop/logger/logger"
 	"go.uber.org/zap/zapcore"
-	"runtime"
-	"strings"
 )
 
-func (zl *zapLogger) With(fs logger.Field) logger.Logger {
-	return zl.withMeta(fs)
+func (zl *zapLogger) With(fs Field) Logger {
+	return zl.with(fs)
 }
 
-func (zl *zapLogger) WithSeverity(severity logger.Severity) *zapLogger {
-	zl = zl.with(logger.Field{
+func (zl *zapLogger) WithSeverity(severity Severity) *zapLogger {
+	zl = zl.with(Field{
 		"severity": severity,
 	})
 	return zl
 }
 
-func (zl *zapLogger) WithSource(source string) logger.Logger {
+func (zl *zapLogger) WithSource(source string) Logger {
 	zl = zl.clone()
 	zl.Source = source
 	return zl
 }
 
-func (zl *zapLogger) WithUid(uid string) logger.Logger {
+func (zl *zapLogger) WithUid(uid string) Logger {
 	zl = zl.clone()
 	zl.Uid = uid
 	return zl
 }
 
-func (zl *zapLogger) WithId(id string) logger.Logger {
+func (zl *zapLogger) WithId(id string) Logger {
 	zl = zl.clone()
 	zl.Id = id
 	return zl
 }
 
 func (zl *zapLogger) DebugF(s string, a ...interface{}) {
-	zl = zl.WithDefault(logger.SeverityLow)
+	zl = zl.WithDefault(SeverityLow)
 	for _, l := range zl.loggers {
 		l.Debug(fmt.Sprintf(s, a...))
 	}
 }
 
 func (zl *zapLogger) InfoF(s string, a ...interface{}) {
-	zl = zl.WithDefault(logger.SeverityLow)
+	zl = zl.WithDefault(SeverityLow)
 	for _, l := range zl.loggers {
 		l.Info(fmt.Sprintf(s, a...))
 	}
 }
 
 func (zl *zapLogger) WarnF(s string, a ...interface{}) {
-	zl = zl.WithDefault(logger.SeverityMedium)
+	zl = zl.WithDefault(SeverityMedium)
 	for _, l := range zl.loggers {
 		l.Warn(fmt.Sprintf(s, a...))
 	}
 }
 
 func (zl *zapLogger) ErrorF(s string, a ...interface{}) {
-	zl = zl.WithDefault(logger.SeverityHigh)
+	zl = zl.WithDefault(SeverityHigh)
 	for _, l := range zl.loggers {
 		l.Error(fmt.Sprintf(s, a...))
 	}
 }
 
 func (zl *zapLogger) CriticalF(s string, a ...interface{}) {
-	zl = zl.WithDefault(logger.SeverityCritical)
+	zl = zl.WithDefault(SeverityCritical)
 	for _, l := range zl.loggers {
 		l.Error(fmt.Sprintf(s, a...))
 	}
 }
 
 func (zl *zapLogger) FatalF(s string, a ...interface{}) {
-	zl = zl.WithDefault(logger.SeverityHigh)
+	zl = zl.WithDefault(SeverityHigh)
 	for _, l := range zl.loggers {
 		l.Fatal(fmt.Sprintf(s, a...))
 	}
 }
 
-func (zl *zapLogger) WithDefault(severity logger.Severity) *zapLogger {
-	zl = zl.with(logger.Field{
+func (zl *zapLogger) WithDefault(severity Severity) *zapLogger {
+	zl = zl.with(Field{
 		"severity": severity,
-		"context":  getContext(),
-		"meta":     zl.Meta,
-		"UID":      zl.Uid,
-		"Id":       zl.Id,
+		"uuid":     zl.Uid,
+		"id":       zl.Id,
 		"source":   zl.Source,
 	})
 	return zl
 }
 
-func (zl *zapLogger) with(fs logger.Field) *zapLogger {
+func (zl *zapLogger) with(fs Field) *zapLogger {
 	if len(fs) == 0 {
 		return zl
 	}
@@ -111,33 +106,11 @@ func (zl *zapLogger) with(fs logger.Field) *zapLogger {
 		}
 	}
 	zls := new(zapLogger)
+	zls.Source = zl.Source
+	zls.Id = zl.Id
+	zls.Uid = zl.Uid
 	for _, l := range zl.loggers {
 		zls.loggers = append(zls.loggers, l.With(fields...))
 	}
 	return zls
-}
-
-func getContext() string {
-	ptr := make([]uintptr, 3)
-	runtime.Callers(4, ptr)
-	context := ""
-	for i := len(ptr) - 1; i >= 0; i-- {
-		p := ptr[i]
-		if name, ok := pcNames[p]; ok {
-			context += name + "|"
-		} else {
-			f := runtime.FuncForPC(p)
-			if f != nil {
-				pcNames[p] = handleName(f.Name())
-				context += pcNames[p] + "|"
-			}
-		}
-	}
-	return strings.TrimSuffix(context, "|")
-}
-
-func handleName(name string) string {
-	split := strings.Split(name, "/")
-	split = strings.Split(split[len(split)-1], ".")
-	return split[len(split)-1]
 }
