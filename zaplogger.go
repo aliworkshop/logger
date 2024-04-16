@@ -84,9 +84,9 @@ func (zl *zapLogger) clone() *zapLogger {
 
 func decideEncoder(Type string, config zapcore.EncoderConfig) zapcore.Encoder {
 	switch Type {
-	case "json":
+	case JsonEncoding:
 		return zapcore.NewJSONEncoder(config)
-	case "console":
+	case ConsoleEncoding:
 		return zapcore.NewConsoleEncoder(config)
 	}
 	return nil

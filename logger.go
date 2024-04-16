@@ -13,3 +13,8 @@ type Logger interface {
 	CriticalF(s string, a ...interface{})
 	FatalF(s string, a ...interface{})
 }
+
+const (
+	JsonEncoding    = "json"
+	ConsoleEncoding = "console"
+)
