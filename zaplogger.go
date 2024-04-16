@@ -5,6 +5,7 @@ import (
 	"github.com/aliworkshop/logger/writers"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"os"
 )
 
 type zapLogger struct {
@@ -12,6 +13,27 @@ type zapLogger struct {
 	Uid     string
 	Source  string
 	Id      string
+}
+
+func NewSimpleLogger(level string, encoding string) Logger {
+	zapLevel := getZapLevel(writers.Level(level))
+
+	enc := decideEncoder(encoding, zapcore.EncoderConfig{
+		TimeKey:        "ts",
+		LevelKey:       "level",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		FunctionKey:    zapcore.OmitKey,
+		MessageKey:     "msg",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,
+		EncodeTime:     zapcore.RFC3339NanoTimeEncoder,
+		EncodeDuration: zapcore.SecondsDurationEncoder,
+		EncodeCaller:   ShortCallerEncoder,
+	})
+	zl := new(zapLogger)
+	zl.loggers = append(zl.loggers, zap.New(writers.NewCore(enc, zapcore.AddSync(os.Stdout), zap.NewAtomicLevelAt(zapLevel))))
+	return zl
 }
 
 func NewLogger(registry configer.Registry, wrts []writers.Writer) (Logger, error) {
