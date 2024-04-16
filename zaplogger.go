@@ -15,8 +15,8 @@ type zapLogger struct {
 	Id      string
 }
 
-func NewSimpleLogger(level string, encoding string) Logger {
-	zapLevel := getZapLevel(writers.Level(level))
+func NewSimpleLogger(level writers.Level, encoding string) Logger {
+	zapLevel := getZapLevel(level)
 
 	enc := decideEncoder(encoding, zapcore.EncoderConfig{
 		TimeKey:        "ts",
